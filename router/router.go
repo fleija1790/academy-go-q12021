@@ -4,8 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"academy/controller/jokes"
-	"academy/controller/update"
+	"academy/controller"
 
 	"github.com/gorilla/mux"
 )
@@ -14,9 +13,9 @@ import (
 func InitServer() {
 
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/api/v1/jokes", jokes.GetJokes).Methods("GET")
-	router.HandleFunc("/api/v1/jokes/{id}", jokes.GetOneJoke).Methods("GET")
-	router.HandleFunc("/api/v1/update-jokes", update.GetData).Methods("GET")
+	router.HandleFunc("/api/v1/jokes", controller.JokesGetJokes).Methods("GET")
+	router.HandleFunc("/api/v1/jokes/{id}", controller.JokesGetOneJoke).Methods("GET")
+	router.HandleFunc("/api/v1/update-jokes", controller.UpdateGetData).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":3000", router))
+	log.Fatal(http.ListenAndServe("localhost:3000", router))
 }

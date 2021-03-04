@@ -1,4 +1,4 @@
-package jokes
+package controller
 
 import (
 	"academy/services/dataload"
@@ -10,15 +10,15 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//GetJokes all Jokes in the data
-func GetJokes(w http.ResponseWriter, r *http.Request) {
+//JokesGetJokes all Jokes in the data
+func JokesGetJokes(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(dataload.ReadData())
 }
 
-//GetOneJoke only one joke by ID
-func GetOneJoke(w http.ResponseWriter, r *http.Request) {
+//JokesGetOneJoke only one joke by ID
+func JokesGetOneJoke(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	jokeID, err := strconv.Atoi(vars["id"])
 	if err != nil {

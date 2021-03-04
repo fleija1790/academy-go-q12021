@@ -1,4 +1,4 @@
-package update
+package controller
 
 import (
 	"academy/services/client"
@@ -6,8 +6,8 @@ import (
 	"net/http"
 )
 
-//GetData Updates the CSV from the target API
-func GetData(w http.ResponseWriter, r *http.Request) {
+//UpdateGetData Updates the CSV from the target API
+func UpdateGetData(w http.ResponseWriter, r *http.Request) {
 	jsonData := client.ConsultExternalService()
 	updatefile.UpdateFile(jsonData)
 	w.Header().Set("Content-type", "application/json")
