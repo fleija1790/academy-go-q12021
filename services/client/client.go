@@ -9,22 +9,28 @@ import (
 )
 
 //ConsultExternalService will call the Jokes API
-func ConsultExternalService() []model.Joke {
+func ConsultExternalService() ([]model.Joke, model.ApiError) {
 	url := "https://official-joke-api.appspot.com/random_ten"
-	request, error := http.NewRequest("GET", url, nil)
-	if error != nil {
-		fmt.Println(error)
+	var ret model.ApiError
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		ret.Error = "NotFound"
+		ret.Message = "Error consulting the external API"
 	}
-	response, _ := http.DefaultClient.Do(request)
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		fmt.Println("Error fetching response")
+	}
 
 	defer response.Body.Close()
 	data, _ := ioutil.ReadAll(response.Body)
 
 	// Unmarshal JSON data
 	var jsonData []model.Joke
-	err := json.Unmarshal([]byte(data), &jsonData)
-	if err != nil {
-		fmt.Println("Unable to handle json")
+	dataErr := json.Unmarshal([]byte(data), &jsonData)
+	if dataErr != nil {
+		ret.Error = "NotFound"
+		ret.Message = "Unable to load json from External request"
 	}
-	return jsonData
+	return jsonData, ret
 }

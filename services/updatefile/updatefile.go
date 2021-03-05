@@ -10,20 +10,21 @@ import (
 	"strings"
 )
 
-func readCsvFile(filePath string) [][]string {
+func readCsvFile(filePath string) ([][]string, []string) {
+	var errorMessage []string
 	f, err := os.Open(filePath)
 	if err != nil {
-		fmt.Println("Unable to read input file "+filePath, err)
+		errorMessage = append(errorMessage, "Unable to read input file: "+filePath, err.Error())
 	}
 	defer f.Close()
 
 	csvReader := csv.NewReader(f)
 	records, err := csvReader.ReadAll()
 	if err != nil {
-		fmt.Println("Unable to parse file as CSV for "+filePath, err)
+		errorMessage = append(errorMessage, "Unable to parse file as CSV for "+filePath, err.Error())
 	}
 
-	return records
+	return records, errorMessage
 }
 
 //UpdateFile the CSV from the target API
@@ -34,7 +35,10 @@ func UpdateFile(jsonData []model.Joke) {
 		fmt.Println(err)
 	}
 	defer csvFile.Close()
-	records := readCsvFile(pwd + "/data/data.csv")
+	records, chkRecords := readCsvFile(pwd + "/data/data.csv")
+	if len(chkRecords) != 0 {
+		fmt.Println("Error Updating file ")
+	}
 
 	counter := len(records) + 1
 	writer := csv.NewWriter(csvFile)

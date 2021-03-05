@@ -11,23 +11,25 @@ import (
 var allJokes []model.Joke
 
 //LoadData this will load the data from the csv
-func LoadData() {
+func LoadData() string {
+	var message string
 	allJokes = append(allJokes[:0])
 	pwd, _ := os.Getwd()
 	csvFile, err := os.Open(pwd + "/data/data.csv")
 	if err != nil {
-		fmt.Println(err)
+		message = "Error openning file: " + err.Error()
 	}
 	defer csvFile.Close()
 	r := csv.NewReader(csvFile)
 	records, err := r.ReadAll()
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
+		message = "Error reading file: " + err.Error()
+		return message
 	}
 	if len(records) == 0 {
-		fmt.Println("Currently there are not Jokes Stored... this is not funny!")
-		os.Exit(1)
+		message = "Currently there are not Jokes Stored... this is not funny!"
+		return message
 	}
 	for _, rec := range records {
 		var insert model.Joke
@@ -36,7 +38,7 @@ func LoadData() {
 		insert.Punchline = rec[2]
 		allJokes = append(allJokes, insert)
 	}
-
+	return message
 }
 
 //ReadData will return the data from the file
