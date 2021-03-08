@@ -4,6 +4,7 @@ import (
 	"academy/model"
 	"encoding/csv"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 )
@@ -38,10 +39,12 @@ func LoadData() string {
 		insert.Punchline = rec[2]
 		allJokes = append(allJokes, insert)
 	}
+	log.Println("[Info] Successfully loaded jokes from file")
 	return message
 }
 
 //ReadData will return the data from the file
 func ReadData() []model.Joke {
+	log.Println("[Info] Returned Jokes, a total of ", len(allJokes))
 	return allJokes
 }

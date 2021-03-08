@@ -5,6 +5,7 @@ import (
 	"academy/services/client"
 	"academy/services/updatefile"
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -16,12 +17,14 @@ func UpdateGetData(w http.ResponseWriter, r *http.Request) {
 	if ret != apiError {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(ret)
+		log.Println("[Error] Error consulting external service,", ret)
 	} else {
 		updatefile.UpdateFile(jsonData)
 		w.WriteHeader(http.StatusOK)
 		var success model.UpdateOk
 		success.Message = "Sucessfully retrieved more Jokes"
 		json.NewEncoder(w).Encode(success)
+		log.Println("[Info] Successfully retrieved more Jokes")
 	}
 
 }

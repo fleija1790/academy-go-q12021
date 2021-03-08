@@ -9,7 +9,7 @@ import (
 
 //ConsultExternalService will call the Jokes API
 func ConsultExternalService() ([]model.Joke, model.ApiError) {
-	url := "https://official-joke-api.appspot.com/random_ten1"
+	url := "https://official-joke-api.appspot.com/random_ten"
 	var ret model.ApiError
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
