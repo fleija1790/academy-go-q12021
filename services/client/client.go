@@ -3,14 +3,13 @@ package client
 import (
 	"academy/model"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
 //ConsultExternalService will call the Jokes API
 func ConsultExternalService() ([]model.Joke, model.ApiError) {
-	url := "https://official-joke-api.appspot.com/random_ten"
+	url := "https://official-joke-api.appspot.com/random_ten1"
 	var ret model.ApiError
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -19,7 +18,9 @@ func ConsultExternalService() ([]model.Joke, model.ApiError) {
 	}
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
-		fmt.Println("Error fetching response")
+		// fmt.Println("Error fetching response")
+		ret.Error = "Not Found"
+		ret.Message = "Error fetching the response"
 	}
 
 	defer response.Body.Close()

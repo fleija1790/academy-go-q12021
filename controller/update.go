@@ -16,10 +16,12 @@ func UpdateGetData(w http.ResponseWriter, r *http.Request) {
 	if ret != apiError {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(ret)
+	} else {
+		updatefile.UpdateFile(jsonData)
+		w.WriteHeader(http.StatusOK)
+		var success model.UpdateOk
+		success.Message = "Sucessfully retrieved more Jokes"
+		json.NewEncoder(w).Encode(success)
 	}
-	updatefile.UpdateFile(jsonData)
-	w.WriteHeader(http.StatusOK)
-	var success model.UpdateOk
-	success.Message = "Sucessfully retrieved more Jokes"
-	json.NewEncoder(w).Encode(success)
+
 }
